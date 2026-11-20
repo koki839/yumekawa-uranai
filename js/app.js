@@ -663,8 +663,11 @@
       var revealTarget = $("#" + (state.partner ? "compat" : "divination") + "-result");
       if (revealTarget) {
         setTimeout(function () {
-          var top = revealTarget.getBoundingClientRect().top + window.pageYOffset - 76;
-          window.scrollTo({ top: top, behavior: "smooth" });
+          var tabsEl = $(".tabs");
+          var tabsTop = tabsEl ? (parseInt(window.getComputedStyle(tabsEl).top, 10) || 0) : 0;
+          var offset = tabsTop + (tabsEl ? tabsEl.offsetHeight : 0) + 12;
+          var top = revealTarget.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
         }, 150);
       }
     }
