@@ -10,8 +10,10 @@
 .
 ├── index.html                  # すべての画面（3タブ）を含む1ページ
 ├── css/style.css               # デザイン（モバイルファースト）
-├── js/app.js                   # 星座判定・タブ・結果描画・相性計算
+├── js/app.js                   # 星座判定・タブ・結果描画・相性計算・共有
 ├── data/horoscope_data.js      # 12星座の本文＋12×12相性データ＋血液型補正
+├── sitemap.xml                 # 検索エンジン用サイトマップ（トップ＋12星座の ?sign= URL）
+├── robots.txt                  # Allow: / ＋ sitemap.xml の案内
 └── assets/
     ├── banner_kawaii.webp      # ヘッダーバナー（1280×683／77KB・実際に読み込まれる）
     └── banner_kawaii.jpg       # 同画像のJPEGフォールバック（140KB）
@@ -100,11 +102,15 @@ AdSense の審査通過後、その `<div class="ad-slot">…</div>` を AdSense
 - 相性スコアは「あなたの星座から見た」向きのあるスコアです（同じ組み合わせでも左右で数値が少し違います）。
 - 直前の選択は `localStorage` に保存され、再訪時に復元されます。
 - `?sign=leo` のようなクエリ、または `#compat` / `#list` のハッシュで直接開けます（SNS共有・広告の着地点用）。
+- 相性は `?sign=leo&partner=sagittarius#compat` で同じ画面を復元できます（共有リンクはこの形式）。血液型は `blood` / `pblood` で保持。
+- 結果には「𝕏 でシェア」「LINE で送る」「URLをコピー」ボタンがあります（結果上部はコンパクト表示、最下部は大きめ表示）。コピーは HTTPS でない環境でも textarea フォールバックで動きます。
 - 占いはエンターテインメントとして明記（フッター）。
 
 ## 公開前チェックリスト
 
 - [x] `og:image` は絶対URLに置き換え済み（`https://koki839.github.io/yumekawa-uranai/assets/banner_kawaii.jpg`）
+- [x] `canonical` / `og:url` / `og:type` / `twitter:card` / `description` / `keywords` を設定済み
+- [x] `sitemap.xml` / `robots.txt` を配置済み
 - [ ] AdSense の `ads.txt` をドメイン直下に置く
-- [ ] Google Search Console にサイトマップ（1ページなら不要）とトップURLを登録
+- [ ] Google Search Console にサイトマップ（`https://koki839.github.io/yumekawa-uranai/sitemap.xml`）とトップURLを登録
 - [ ] 計測を入れる場合は GA4 か Cloudflare Analytics を `<head>` に追加

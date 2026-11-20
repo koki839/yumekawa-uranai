@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# ゆめかわ星占い — 12星座占い・相性占い
+Sitemap: https://koki839.github.io/yumekawa-uranai/sitemap.xml

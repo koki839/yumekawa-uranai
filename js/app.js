@@ -14,6 +14,9 @@
   var BP = H.bloodPair;
   var ELEMENTS = H.elements;
 
+  /* 共有用の公開URL（GitHub Pages） */
+  var SITE_BASE = "https://koki839.github.io/yumekawa-uranai/";
+
   var RELATIONS = {
     love:   { label: "恋愛", frame: "恋として近づくなら" },
     friend: { label: "友達", frame: "友達として付き合うなら" },
@@ -183,6 +186,12 @@
   }
 
   /* ---------------- blood segmented ---------------- */
+  function markBlood(container, value) {
+    if (!container) { return; }
+    $all(".seg", container).forEach(function (b) {
+      b.classList.toggle("is-on", (b.getAttribute("data-blood") || "") === (value || ""));
+    });
+  }
   function bindBlood(container, key) {
     container.addEventListener("click", function (e) {
       var btn = e.target.closest(".seg");
@@ -191,6 +200,125 @@
       btn.classList.add("is-on");
       state[key] = btn.getAttribute("data-blood") || "";
     });
+  }
+
+  /* ---------------- share (X / LINE / copy) ---------------- */
+  function shareURLSign(key) {
+    var u = SITE_BASE + "?sign=" + encodeURIComponent(key);
+    if (state.blood) { u += "&blood=" + encodeURIComponent(state.blood); }
+    return u;
+  }
+  function shareURLCompat(a, b) {
+    var u = SITE_BASE + "?sign=" + encodeURIComponent(a) + "&partner=" + encodeURIComponent(b);
+    if (state.blood) { u += "&blood=" + encodeURIComponent(state.blood); }
+    if (state.partnerBlood) { u += "&pblood=" + encodeURIComponent(state.partnerBlood); }
+    return u + "#compat";
+  }
+  function starMarks(n) {
+    var out = "";
+    for (var i = 1; i <= 5; i++) { out += (i <= n ? "★" : "☆"); }
+    return out;
+  }
+  function divinationShareText(key) {
+    var s = SIGNS[key];
+    return "私の今週の運勢は【" + s.name + "】" + s.symbol + "✨ 総合運" + starMarks(s.rates.overall) +
+      "、ラッキーカラーは「" + s.lucky.colorName + "」。\n" +
+      "「" + s.weekly.headline + "」\n" +
+      "#ゆめかわ星占い #12星座占い";
+  }
+  function compatShareText(myKey, ptKey) {
+    var mine = SIGNS[myKey];
+    var theirs = SIGNS[ptKey];
+    var entry = COMPAT[myKey][ptKey];
+    var total = compatScore(myKey, ptKey).total;
+    return "【" + mine.name + " × " + theirs.name + "】相性 " + total + "%" +
+      "「" + entry.t + "」💞\n" +
+      "#ゆめかわ星占い #12星座占い #相性占い";
+  }
+  function shareHTML(opts) {
+    var text = opts.text;
+    var url = opts.url;
+    var encText = encodeURIComponent(text);
+    var encUrl = encodeURIComponent(url);
+    var xHref = "https://twitter.com/intent/tweet?text=" + encText + "&url=" + encUrl;
+    var lineHref = "https://social-plugins.line.me/lineit/share?url=" + encUrl + "&text=" + encText;
+
+    var html = '<div class="share-box' + (opts.compact ? " share-box-compact" : "") + '" role="group" aria-label="占い結果をシェア">';
+    html += '<p class="share-head">' + (opts.compact ? "✦ シェアする" : "✦ この結果をシェアする") + "</p>";
+    html += '<div class="share-btns">';
+    html += '<a class="share-btn share-x" href="' + esc(xHref) + '" target="_blank" rel="noopener noreferrer">' +
+      '<span class="sb-ico" aria-hidden="true">𝕏</span>' + opts.xLabel + "</a>";
+    html += '<a class="share-btn share-line" href="' + esc(lineHref) + '" target="_blank" rel="noopener noreferrer">' +
+      '<span class="sb-ico sb-ico-line" aria-hidden="true">LINE</span>で送る</a>';
+    html += '<button type="button" class="share-btn share-copy" data-copy-url="' + esc(url) + '">' +
+      '<span class="sb-ico" aria-hidden="true">🔗</span>URLをコピー</button>';
+    html += "</div>";
+    if (!opts.compact) {
+      html += '<p class="share-hint">シェアしたリンクをひらくと、同じ結果がそのまま見られます。</p>';
+    }
+    html += "</div>";
+    return html;
+  }
+  function divinationShare(compact) {
+    var key = state.sign;
+    if (!key) { return ""; }
+    return shareHTML({
+      text: divinationShareText(key),
+      url: shareURLSign(key),
+      xLabel: "でシェア",
+      compact: !!compact
+    });
+  }
+  function compatShare(compact) {
+    if (!state.sign || !state.partner) { return ""; }
+    return shareHTML({
+      text: compatShareText(state.sign, state.partner),
+      url: shareURLCompat(state.sign, state.partner),
+      xLabel: "で相性をシェア",
+      compact: !!compact
+    });
+  }
+
+  /* ---------------- toast & clipboard ---------------- */
+  function toast(msg) {
+    var el = document.getElementById("yk-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "yk-toast";
+      el.className = "yk-toast";
+      el.setAttribute("role", "status");
+      el.setAttribute("aria-live", "polite");
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add("is-on");
+    if (toast._t) { clearTimeout(toast._t); }
+    toast._t = setTimeout(function () { el.classList.remove("is-on"); }, 2200);
+  }
+  function legacyCopy(text) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "-2000px";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(
+        function () { return true; },
+        function () { return legacyCopy(text); }
+      );
+    }
+    return Promise.resolve(legacyCopy(text));
   }
 
   /* ---------------- render: divination ---------------- */
@@ -230,6 +358,7 @@
       html += '<div class="rate-row"><span>' + r[0] + '</span><span class="stars" aria-label="5段階中' + r[1] + '">' + starRow(r[1]) + "</span></div>";
     });
     html += "</div></div>";
+    html += divinationShare(true);
 
     /* --- personality --- */
     html += '<div class="sect"><h3 class="sect-title">性格と、隠れた魅力 <small>PERSONALITY</small></h3>';
@@ -291,6 +420,8 @@
     html += "</div>";
     html += '<button type="button" class="inline-link" data-goto-compat="' + key + '">この星座で相性をしらべる →</button>';
     html += "</div></div>";
+
+    html += '<div class="result-card share-card">' + divinationShare(false) + "</div>";
 
     return html;
   }
@@ -364,6 +495,7 @@
     html += '<h3 class="compat-title">' + esc(entry.t) + "</h3>";
     html += '<div class="keywords">' + entry.k.map(function (k) { return "<span>" + esc(k) + "</span>"; }).join("") + "</div>";
     html += "</div>";
+    html += compatShare(true);
 
     html += '<div class="sect"><h3 class="sect-title">ふたりの読み解き <small>READING</small></h3><div class="prose">' +
       entry.b.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") + "</div></div>";
@@ -388,6 +520,8 @@
 
     html += '<button type="button" class="inline-link" data-goto-div="' + ptKey + '">' + esc(theirs.name) + "の運勢を見る →</button>";
     html += "</div>";
+
+    html += '<div class="result-card share-card">' + compatShare(false) + "</div>";
     return html;
   }
 
@@ -487,6 +621,21 @@
     /* deep link ?sign=leo or #sign=leo */
     var params = new URLSearchParams(window.location.search);
     var qSign = params.get("sign");
+    var qPartner = params.get("partner");
+    var qBlood = params.get("blood");
+    var qPBlood = params.get("pblood");
+    var BLOOD_OK = /^(A|B|O|AB)$/;
+    var arrivedByShare = false;
+
+    if (qBlood && qBlood !== "none" && BLOOD_OK.test(qBlood)) {
+      state.blood = qBlood;
+      markBlood($(".segmented[aria-labelledby='blood-label']"), qBlood);
+      markBlood($("#my-blood"), qBlood);
+    }
+    if (qPBlood && BLOOD_OK.test(qPBlood)) {
+      state.partnerBlood = qPBlood;
+      markBlood($("#partner-blood"), qPBlood);
+    }
     if (qSign && SIGNS[qSign]) { savedSign = qSign; }
     var m = (window.location.hash || "").match(/sign=([a-z]+)/);
     if (m && SIGNS[m[1]]) { savedSign = m[1]; }
@@ -495,6 +644,29 @@
       markSelected($("#sign-grid"), savedSign);
       markSelected($("#my-sign-grid"), savedSign);
       renderDivination(true);
+    }
+
+    /* 相性の共有リンク（?sign=leo&partner=sagittarius#compat）を復元 */
+    if (qPartner && SIGNS[qPartner]) {
+      state.partner = qPartner;
+      markSelected($("#partner-sign-grid"), qPartner);
+      if (state.sign) {
+        renderCompat();
+        switchTab("compat");
+        arrivedByShare = true;
+      }
+    } else if (qSign && SIGNS[qSign]) {
+      arrivedByShare = true;
+    }
+
+    if (arrivedByShare) {
+      var revealTarget = $("#" + (state.partner ? "compat" : "divination") + "-result");
+      if (revealTarget) {
+        setTimeout(function () {
+          var top = revealTarget.getBoundingClientRect().top + window.pageYOffset - 76;
+          window.scrollTo({ top: top, behavior: "smooth" });
+        }, 150);
+      }
     }
 
     /* buttons */
@@ -538,6 +710,14 @@
 
     /* delegated result links */
     document.addEventListener("click", function (e) {
+      var copyBtn = e.target.closest("[data-copy-url]");
+      if (copyBtn) {
+        var urlToCopy = copyBtn.getAttribute("data-copy-url") || "";
+        copyText(urlToCopy).then(function (ok) {
+          toast(ok ? "コピーしました！" : "コピーできませんでした。URLを長押しでコピーしてね");
+        });
+        return;
+      }
       var toCompat = e.target.closest("[data-goto-compat]");
       if (toCompat) {
         var key = toCompat.getAttribute("data-goto-compat");
