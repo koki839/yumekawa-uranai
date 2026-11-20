@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ゆめかわ星占い｜12星座占い・相性占い・今日の運勢</title>
+<meta name="description" content="パステルピンクとラベンダーの12星座占い。生年月日を選ぶだけで今日・今週の運勢、恋愛運、仕事と金運、ラッキーカラーまで。12星座の相性も12×12でまるわかり。">
+<meta name="theme-color" content="#FFD6EC">
+<meta property="og:title" content="ゆめかわ星占い｜12星座占い・相性占い">
+<meta property="og:description" content="星からのラブレター。今日の運勢も、気になる人との相性も、ぜんぶここで。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://koki839.github.io/yumekawa-uranai/assets/banner_kawaii.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23F3E3FF'/%3E%3Ccircle cx='19' cy='12' r='8' fill='%23E6C377'/%3E%3Ccircle cx='15' cy='10' r='7' fill='%23F3E3FF'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ゆめかわ星占い",
+  "description": "12星座の占いと相性診断。パステルピンクとラベンダーのやさしい星占い。",
+  "inLanguage": "ja"
+}
+</script>
+</head>
+<body>
+
+<div class="sky" aria-hidden="true">
+  <span class="sky-star s1"></span><span class="sky-star s2"></span><span class="sky-star s3"></span>
+  <span class="sky-star s4"></span><span class="sky-star s5"></span><span class="sky-star s6"></span>
+  <span class="sky-star s7"></span><span class="sky-star s8"></span>
+</div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">☾</span>
+      <span class="brand-text">
+        <b>ゆめかわ星占い</b>
+        <small>YUMEKAWA HOSHI URANAI</small>
+      </span>
+    </a>
+    <nav class="header-nav" aria-label="メニュー">
+      <a href="#tabs" data-jump="divination">星座占い</a>
+      <a href="#tabs" data-jump="compat">相性占い</a>
+      <a href="#premium">プレミアム</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">✦ 12 STARS &amp; YOUR HEART ✦</p>
+        <h1>星からの<span class="grad">ラブレター</span>を、<br class="sp">あなたに。</h1>
+        <p class="lead">生まれた日の星が、あなたの性格も、恋の癖も、今週の流れも知っています。むずかしいことは抜きで、ただやさしく読める12星座占い。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#tabs" data-jump="divination">✦ 私の星をしらべる</a>
+          <a class="btn btn-ghost" href="#tabs" data-jump="compat">💞 相性をみる</a>
+        </div>
+        <ul class="hero-points">
+          <li>生年月日で星座が自動判定</li>
+          <li>血液型でひとこと補正</li>
+          <li>12×12の相性スコア</li>
+        </ul>
+      </div>
+      <figure class="hero-banner">
+        <picture>
+          <source type="image/webp" srcset="assets/banner_kawaii.webp">
+          <img src="assets/banner_kawaii.jpg" alt="パステルピンクとラベンダーの夜空に、月とうさぎと星がかがやくイラスト" width="1280" height="683" loading="eager" decoding="async">
+        </picture>
+        <figcaption>☾ today's sky, softly</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= TABS ================= -->
+  <div class="wrap" id="tabs">
+    <div class="tabs" role="tablist" aria-label="占いメニュー">
+      <button class="tab is-active" role="tab" id="tab-divination" aria-controls="panel-divination" aria-selected="true" data-tab="divination">
+        <span class="tab-ico">✨</span>星座占い
+      </button>
+      <button class="tab" role="tab" id="tab-compat" aria-controls="panel-compat" aria-selected="false" data-tab="compat">
+        <span class="tab-ico">💞</span>相性占い
+      </button>
+      <button class="tab" role="tab" id="tab-list" aria-controls="panel-list" aria-selected="false" data-tab="list">
+        <span class="tab-ico">🌟</span>12星座一覧
+      </button>
+    </div>
+
+    <!-- ================= PANEL 1 : 星座占い ================= -->
+    <section class="panel is-active" id="panel-divination" role="tabpanel" aria-labelledby="tab-divination">
+
+      <div class="card form-card">
+        <div class="card-head">
+          <h2>あなたの星を、教えてください</h2>
+          <p class="card-sub">生年月日を選ぶと、星座がひとりでに決まります。下のボタンから直接えらんでもOK。</p>
+        </div>
+
+        <div class="form-cols">
+          <div class="form-block">
+            <label class="field-label" for="birth-year">生年月日</label>
+            <div class="date-row">
+              <select id="birth-year" class="select" aria-label="生まれた年">
+                <option value="">年</option>
+              </select>
+              <select id="birth-month" class="select" aria-label="生まれた月">
+                <option value="">月</option>
+              </select>
+              <select id="birth-day" class="select" aria-label="生まれた日">
+                <option value="">日</option>
+              </select>
+            </div>
+            <p class="auto-sign" id="auto-sign" aria-live="polite">星座はまだ選ばれていません</p>
+          </div>
+
+          <div class="form-block">
+            <span class="field-label" id="blood-label">血液型（任意）</span>
+            <div class="segmented" role="group" aria-labelledby="blood-label">
+              <button type="button" class="seg" data-blood="A">A</button>
+              <button type="button" class="seg" data-blood="B">B</button>
+              <button type="button" class="seg" data-blood="O">O</button>
+              <button type="button" class="seg" data-blood="AB">AB</button>
+              <button type="button" class="seg is-on" data-blood="">わからない</button>
+            </div>
+            <p class="field-hint">血液型は、結果にひとことアドバイスを足すだけ。気にしない人はそのままで。</p>
+          </div>
+        </div>
+
+        <div class="form-block">
+          <span class="field-label">星座をえらぶ</span>
+          <div class="sign-grid" id="sign-grid" role="group" aria-label="12星座"></div>
+        </div>
+
+        <div class="form-submit">
+          <button type="button" class="btn btn-primary btn-wide" id="btn-divine">✦ 星にきく</button>
+          <p class="tiny">※ 占いはエンターテインメントです。決断のすべてを星にゆだねないでね。</p>
+        </div>
+      </div>
+
+      <div id="divination-result" class="result-area" aria-live="polite"></div>
+
+      <!-- AdSense Slot -->
+      <div class="ad-slot" aria-hidden="true"><span>AD</span></div>
+
+    </section>
+
+    <!-- ================= PANEL 2 : 相性占い ================= -->
+    <section class="panel" id="panel-compat" role="tabpanel" aria-labelledby="tab-compat" hidden>
+      <div class="card form-card">
+        <div class="card-head">
+          <h2>ふたりの星、相性はどう？</h2>
+          <p class="card-sub">あなたの星座と、気になるあの人の星座をえらんでください。12×12、ぜんぶ違う読み解きを用意しています。</p>
+        </div>
+
+        <div class="compat-pickers">
+          <div class="picker">
+            <span class="field-label">あなた</span>
+            <div class="sign-grid sign-grid-sm" id="my-sign-grid" role="group" aria-label="あなたの星座"></div>
+            <div class="picker-blood">
+              <span class="mini-label">血液型</span>
+              <div class="segmented segmented-sm" id="my-blood" role="group" aria-label="あなたの血液型">
+                <button type="button" class="seg" data-blood="A">A</button>
+                <button type="button" class="seg" data-blood="B">B</button>
+                <button type="button" class="seg" data-blood="O">O</button>
+                <button type="button" class="seg" data-blood="AB">AB</button>
+                <button type="button" class="seg is-on" data-blood="">?</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="picker-heart" aria-hidden="true">💞</div>
+
+          <div class="picker">
+            <span class="field-label">相手</span>
+            <div class="sign-grid sign-grid-sm" id="partner-sign-grid" role="group" aria-label="相手の星座"></div>
+            <div class="picker-blood">
+              <span class="mini-label">血液型</span>
+              <div class="segmented segmented-sm" id="partner-blood" role="group" aria-label="相手の血液型">
+                <button type="button" class="seg" data-blood="A">A</button>
+                <button type="button" class="seg" data-blood="B">B</button>
+                <button type="button" class="seg" data-blood="O">O</button>
+                <button type="button" class="seg" data-blood="AB">AB</button>
+                <button type="button" class="seg is-on" data-blood="">?</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-submit">
+          <button type="button" class="btn btn-primary btn-wide" id="btn-compat">💞 相性をしらべる</button>
+        </div>
+      </div>
+
+      <div id="compat-result" class="result-area" aria-live="polite"></div>
+
+      <!-- AdSense Slot -->
+      <div class="ad-slot" aria-hidden="true"><span>AD</span></div>
+    </section>
+
+    <!-- ================= PANEL 3 : 12星座一覧 ================= -->
+    <section class="panel" id="panel-list" role="tabpanel" aria-labelledby="tab-list" hidden>
+      <div class="card-head list-head">
+        <h2>12星座、ぜんぶ見る</h2>
+        <p class="card-sub">気になる星座をタップすると、くわしい運勢がひらきます。</p>
+      </div>
+      <div class="sign-cards" id="sign-cards"></div>
+    </section>
+  </div>
+
+  <!-- ================= PREMIUM ================= -->
+  <section class="premium" id="premium">
+    <div class="wrap premium-inner">
+      <div class="premium-copy">
+        <p class="eyebrow">✨ 受付中 · ¥1,500</p>
+        <h2>1:1 プレミアム鑑定</h2>
+        <p>ここまでが、星のあいさつ。プレミアムでは、あなたの生年月日と今の状況を読んで、<strong>あなただけの鑑定書</strong>をお届けします。</p>
+        <ul class="premium-list">
+          <li>生まれ持った星の配置から、才能とつまずきのパターンを読み解く</li>
+          <li>恋愛・仕事・家族、いま迷っていることを3つまで具体的に</li>
+          <li>これから3か月の流れと、行動のタイミング</li>
+          <li>PDFの鑑定書（A4・10ページ前後）でお届け</li>
+        </ul>
+        <div class="premium-actions">
+          <a class="btn btn-primary btn-paypal"
+             href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=dfkgj3147%40gmail.com&amp;item_name=Yumekawa%20Hoshi%20Uranai%20-%201%3A1%20Premium%20Reading%20%28PDF%29&amp;amount=1500&amp;currency_code=JPY&amp;no_shipping=1&amp;lc=JP&amp;charset=UTF-8"
+             target="_blank" rel="noopener">1:1 プレミアム鑑定を申し込む（¥1,500）</a>
+          <span class="paypal-note">お支払いは <b>PayPal</b> で。<br class="sp">PayPalアカウントがなくても、クレジットカードで決済できます。</span>
+        </div>
+
+        <div class="premium-flow">
+          <h3>お申し込みの流れ</h3>
+          <ol class="flow-list">
+            <li>
+              <span class="flow-num" aria-hidden="true">1</span>
+              <div class="flow-body">
+                <b>お支払い（¥1,500）</b>
+                <p>上のボタンから、PayPalの画面でお支払いください。PayPalのアカウントがなくても、クレジットカードでそのままお支払いいただけます。</p>
+              </div>
+            </li>
+            <li>
+              <span class="flow-num" aria-hidden="true">2</span>
+              <div class="flow-body">
+                <b>ご依頼内容をメールで</b>
+                <p>お支払いが終わったら、<a href="mailto:dfkgj3147@gmail.com?subject=%E3%80%901%3A1%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0%E9%91%91%E5%AE%9A%E3%80%91%E3%81%8A%E7%94%B3%E3%81%97%E8%BE%BC%E3%81%BF&amp;body=%E2%91%A0%20%E7%94%9F%E5%B9%B4%E6%9C%88%E6%97%A5%EF%BC%9A%0A%E3%80%80%EF%BC%88%E5%87%BA%E7%94%9F%E6%99%82%E9%96%93%E3%81%8C%E3%82%8F%E3%81%8B%E3%82%8C%E3%81%B0%EF%BC%9A%E3%80%80%E3%80%80%E6%99%82%E3%80%80%E3%80%80%E5%88%86%EF%BC%89%0A%0A%E2%91%A1%20%E4%BB%8A%E3%81%8A%E6%82%A9%E3%81%BF%E3%81%AE%E3%81%93%E3%81%A83%E3%81%A4%0A%E3%80%801.%20%0A%E3%80%802.%20%0A%E3%80%803.%20%0A%0A%E2%80%BB%E3%81%8A%E6%94%AF%E6%89%95%E3%81%84%E6%99%82%E3%81%AEPayPal%E3%81%AE%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%EF%BC%8F%E3%81%8A%E5%90%8D%E5%89%8D%EF%BC%9A%0A">dfkgj3147@gmail.com</a> まで、次の2つをお送りください。</p>
+                <ul class="flow-req">
+                  <li>① お生まれの年月日（出生時間がわかれば、なお深く読めます）</li>
+                  <li>② いまお悩みのこと3つ（恋愛・お仕事・人間関係など、なんでも）</li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <span class="flow-num" aria-hidden="true">3</span>
+              <div class="flow-body">
+                <b>鑑定書のお届け（48時間以内）</b>
+                <p>ご連絡から48時間以内に、PDFの鑑定書（A4・10ページ前後）をメールでお返しします。スマホでもそのまま読める形でお届けします。</p>
+              </div>
+            </li>
+          </ol>
+          <p class="tiny">※ ご依頼のメールが2日たっても届かない場合は、お手数ですが迷惑メールフォルダもご確認ください。鑑定はエンターテインメントとしてお楽しみいただくものです。</p>
+        </div>
+      </div>
+      <div class="premium-art" aria-hidden="true">
+        <div class="moon-disc">
+          <span class="moon-face">☾</span>
+          <span class="ring r1"></span><span class="ring r2"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AdSense Slot -->
+  <div class="wrap"><div class="ad-slot ad-slot-wide" aria-hidden="true"><span>AD</span></div></div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark">☾</span>
+      <b>ゆめかわ星占い</b>
+    </div>
+    <p class="footer-note">占い結果はエンターテインメントです。医療・法律・お金の判断は、専門家にご相談ください。</p>
+    <p class="footer-copy">© 2026 ゆめかわ星占い</p>
+  </div>
+</footer>
+
+<script src="data/horoscope_data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
