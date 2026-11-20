@@ -1,28 +1,30 @@
-# ゆめかわ星占い — tarot_global/jp
+# ゆめかわ星占い（公開リポジトリ）
+
+公開URL: https://koki839.github.io/yumekawa-uranai/
 
 ピンク×ラベンダーの「ゆめかわ」な12星座占いサイト。フレームワークなしの純粋な HTML / CSS / JS なので、そのまま静的ホスティングに置けます（サーバー代0円）。
 
 ## ファイル構成
 
 ```
-tarot_global/jp/
+.
 ├── index.html                  # すべての画面（3タブ）を含む1ページ
 ├── css/style.css               # デザイン（モバイルファースト）
 ├── js/app.js                   # 星座判定・タブ・結果描画・相性計算
 ├── data/horoscope_data.js      # 12星座の本文＋12×12相性データ＋血液型補正
 └── assets/
     ├── banner_kawaii.webp      # ヘッダーバナー（1280×683／77KB・実際に読み込まれる）
-    ├── banner_kawaii.jpg       # 同画像のJPEGフォールバック（140KB）
-    └── banner_kawaii.png       # 同画像のマスター（1717×916・未参照）
+    └── banner_kawaii.jpg       # 同画像のJPEGフォールバック（140KB）
 ```
 
+未参照の 2.1MB マスター画像（`banner_kawaii.png`）は公開リポジトリには入れていません（ローカルの `tarot_global/jp/assets/` にのみ保管）。
+
 - 外部依存は Google Fonts（Zen Maru Gothic / Noto Sans JP）のみ。落ちても端末フォントで表示されます。
-- 画像は `assets/` の1枚（WebP→JPEGの順に読み込み、PNGはマスターとして保管）。読み込みは相対パスなので、サブディレクトリ配信でもそのまま動きます。
+- ヘッダー画像は `assets/` の1枚だけ（WebP→JPEGの順に読み込み）。読み込みは相対パスなので、サブディレクトリ配信でもそのまま動きます。
 
 ## ローカルで確認する
 
 ```bash
-cd tarot_global/jp
 python3 -m http.server 8000
 # → http://localhost:8000/
 ```
@@ -33,11 +35,11 @@ python3 -m http.server 8000
 
 ### Cloudflare Pages
 1. Cloudflare Dashboard → Workers & Pages → Create → Pages → Upload assets
-2. `tarot_global/jp` フォルダの中身（`index.html` が最上位に来るように）をドラッグ＆ドロップ
+2. このフォルダの中身（`index.html` が最上位に来るように）をドラッグ＆ドロップ
 3. そのまま公開。独自ドメインは後から Custom domain で割り当て
 
 ### GitHub Pages
-1. リポジトリを作り、`tarot_global/jp` の中身を `main` ブランチ直下に push
+1. リポジトリを作り、このフォルダの中身を `main` ブランチ直下に push
 2. Settings → Pages → Source: Deploy from a branch → `main` / `root`
 3. 数分後に `https://<user>.github.io/<repo>/` で公開
 
@@ -102,7 +104,7 @@ AdSense の審査通過後、その `<div class="ad-slot">…</div>` を AdSense
 
 ## 公開前チェックリスト
 
-- [ ] `og:image` は絶対URLに置き換える（現在は相対パス）
+- [x] `og:image` は絶対URLに置き換え済み（`https://koki839.github.io/yumekawa-uranai/assets/banner_kawaii.jpg`）
 - [ ] AdSense の `ads.txt` をドメイン直下に置く
 - [ ] Google Search Console にサイトマップ（1ページなら不要）とトップURLを登録
 - [ ] 計測を入れる場合は GA4 か Cloudflare Analytics を `<head>` に追加
