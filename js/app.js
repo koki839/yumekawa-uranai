@@ -59,6 +59,21 @@
     try { return window.localStorage.getItem("yumekawa:" + key); } catch (e) { return null; }
   }
 
+  /* ---------------- analytics (GA4) ---------------- */
+  /* gtag が無い・ブロックされた環境でもサイトを壊さない */
+  function trackEvent(name, params) {
+    try {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", name, params || {});
+      }
+    } catch (e) { /* analytics 失敗は無視 */ }
+  }
+  function resultTypeOf(el) {
+    try {
+      return el && el.closest && el.closest("#compat-result") ? "compat" : "divination";
+    } catch (e) { return "divination"; }
+  }
+
   /* ---------------- 星座判定 ---------------- */
   var RANGES = [
     { m: 1,  d: 20, s: "aquarius" },
@@ -148,6 +163,7 @@
       setSign(signKey, { silent: true, scroll: false });
       auto.innerHTML = "あなたの星座は <b>" + SIGNS[signKey].symbol + " " + SIGNS[signKey].name + "</b> です";
       renderDivination(true);
+      trackEvent("divination_lookup", { method: "birthdate", sign: signKey });
     } else {
       auto.textContent = "星座はまだ選ばれていません";
     }
@@ -181,7 +197,10 @@
     opts = opts || {};
     state.sign = key;
     markSelected($("#sign-grid"), key);
-    if (!opts.silent) { renderDivination(false); }
+    if (!opts.silent) {
+      renderDivination(false);
+      trackEvent("divination_lookup", { method: opts.method || "sign", sign: key, blood: state.blood || "none" });
+    }
     store("sign", key);
   }
 
@@ -535,6 +554,7 @@
         if (!b) { return; }
         state.relation = b.getAttribute("data-relation");
         renderCompat();
+        trackEvent("relation_change", { relation: state.relation, my_sign: state.sign, partner_sign: state.partner });
       });
     }
   }
@@ -567,6 +587,7 @@
 
   /* ---------------- tabs ---------------- */
   function switchTab(name) {
+    var prevTab = state.tab;
     state.tab = name;
     $all(".tab").forEach(function (t) {
       var on = t.getAttribute("data-tab") === name;
@@ -579,6 +600,7 @@
       if (on) { p.removeAttribute("hidden"); } else { p.setAttribute("hidden", ""); }
     });
     try { history.replaceState(null, "", "#" + name); } catch (err) {}
+    if (prevTab !== name) { trackEvent("tab_change", { tab: name, from: prevTab || "none" }); }
   }
 
   /* ---------------- init ---------------- */
@@ -660,6 +682,7 @@
     }
 
     if (arrivedByShare) {
+      trackEvent("share_landing", { content_type: state.partner ? "compat" : "divination", sign: state.sign || "none" });
       var revealTarget = $("#" + (state.partner ? "compat" : "divination") + "-result");
       if (revealTarget) {
         setTimeout(function () {
@@ -681,6 +704,7 @@
         return;
       }
       renderDivination(false);
+      trackEvent("divination_lookup", { method: "button", sign: state.sign, blood: state.blood || "none" });
       $("#divination-result").scrollIntoView({ behavior: "smooth", block: "start" });
     });
     $("#btn-compat").addEventListener("click", function () {
@@ -699,6 +723,12 @@
       var old2 = $(".compat-hint");
       if (old2) { old2.remove(); }
       renderCompat();
+      trackEvent("compat_lookup", {
+        my_sign: state.sign,
+        partner_sign: state.partner,
+        relation: state.relation,
+        score: compatScore(state.sign, state.partner).total
+      });
       $("#compat-result").scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
@@ -713,10 +743,22 @@
 
     /* delegated result links */
     document.addEventListener("click", function (e) {
+      /* 共有クリック（X / LINE） */
+      var shareX = e.target.closest(".share-x");
+      var shareLine = e.target.closest(".share-line");
+      if (shareX || shareLine) {
+        trackEvent("share_click", { method: shareX ? "x" : "line", content_type: resultTypeOf(e.target) });
+      }
+      /* PayPal プレミアム鑑定ボタン */
+      if (e.target.closest(".btn-paypal")) {
+        trackEvent("premium_click", { item_name: "1:1 Premium Reading (PDF)", value: 1500, currency: "JPY" });
+      }
       var copyBtn = e.target.closest("[data-copy-url]");
       if (copyBtn) {
         var urlToCopy = copyBtn.getAttribute("data-copy-url") || "";
+        var copyType = resultTypeOf(copyBtn);
         copyText(urlToCopy).then(function (ok) {
+          trackEvent("share_click", { method: "copy", content_type: copyType, success: !!ok });
           toast(ok ? "コピーしました！" : "コピーできませんでした。URLを長押しでコピーしてね");
         });
         return;
