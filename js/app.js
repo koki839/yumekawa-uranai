@@ -246,9 +246,9 @@
     var html = '<div class="share-box' + (opts.compact ? " share-box-compact" : "") + '" role="group" aria-label="占い結果をシェア">';
     html += '<p class="share-head">' + (opts.compact ? "✦ シェアする" : "✦ この結果をシェアする") + "</p>";
     html += '<div class="share-btns">';
-    html += '<a class="share-btn share-x" href="' + esc(xHref) + '" target="_blank" rel="noopener noreferrer">' +
+    html += '<a class="share-btn share-x" href="' + esc(xHref) + '" target="_blank" rel="noopener noreferrer" aria-label="X（Twitter）でシェアする">' +
       '<span class="sb-ico" aria-hidden="true">𝕏</span>' + opts.xLabel + "</a>";
-    html += '<a class="share-btn share-line" href="' + esc(lineHref) + '" target="_blank" rel="noopener noreferrer">' +
+    html += '<a class="share-btn share-line" href="' + esc(lineHref) + '" target="_blank" rel="noopener noreferrer" aria-label="LINEで送る">' +
       '<span class="sb-ico sb-ico-line" aria-hidden="true">LINE</span>で送る</a>';
     html += '<button type="button" class="share-btn share-copy" data-copy-url="' + esc(url) + '">' +
       '<span class="sb-ico" aria-hidden="true">🔗</span>URLをコピー</button>';

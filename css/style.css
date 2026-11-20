@@ -1581,6 +1581,8 @@ h1,h2,h3,h4{
 @media (max-width: 430px){
   .hero-actions{ display: grid; }
   .hero-actions .btn{ width: 100%; }
+  .share-btn{ padding: 9px 12px; font-size: 11.5px; gap: 5px; }
+  .share-btn .sb-ico{ font-size: 11.5px; }
 }
 
 @media (prefers-reduced-motion: reduce){
